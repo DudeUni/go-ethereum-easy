@@ -60,6 +60,15 @@ func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block
 		}
 		return nil
 	}
+
+	// If no transaction, pause
+	// Free mining for the first 10 blocks to give initial funds to coinbase
+	//https://ethereum.stackexchange.com/questions/3151/how-to-make-miner-to-mine-only-when-there-are-pending-transactions
+	if len(block.Transactions()) == 0 && block.Header().Number.Cmp(big.NewInt(10)) > 0 {
+		ethash.config.Log.Info("Sealing paused, waiting for transactions")
+		return nil
+	}
+
 	// If we're running a shared PoW, delegate sealing to it
 	if ethash.shared != nil {
 		return ethash.shared.Seal(chain, block, results, stop)
