@@ -370,10 +370,18 @@ var (
 // makeDifficultyCalculator creates a difficultyCalculator with the given bomb-delay.
 // the difficulty is calculated with Byzantium rules, which differs from Homestead in
 // how uncles affect the calculation
+
+// set constant difficulty.
+// https://hackernoon.com/how-to-reduce-block-difficulty-in-ethereum-private-testnet-2ad505609e82
+// https://ethereum.stackexchange.com/questions/5913/how-does-the-ethereum-homestead-difficulty-adjustment-algorithm-work/5914#5914
+
+// difficulty bomb is removed
+
 func makeDifficultyCalculator(bombDelay *big.Int) func(time uint64, parent *types.Header) *big.Int {
 	// Note, the calculations below looks at the parent number, which is 1 below
 	// the block number. Thus we remove one from the delay given
 	// bombDelayFromParent := new(big.Int).Sub(bombDelay, big1)
+
 	return func(time uint64, parent *types.Header) *big.Int {
 		// https://github.com/ethereum/EIPs/issues/100.
 		// algorithm:
