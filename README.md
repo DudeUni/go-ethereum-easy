@@ -1,3 +1,21 @@
+
+Here is the altered version of go-ethereum, aiming to:
+
+   [1] Fix the difficulties of each block.  
+   [2] Allow custom Gas fee. 
+   
+   
+
+---------------
+Following are the original readme
+---------------
+
+
+
+
+
+
+
 ## Go Ethereum
 
 Official Golang implementation of the Ethereum protocol.
