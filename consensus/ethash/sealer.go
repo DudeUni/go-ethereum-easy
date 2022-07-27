@@ -48,6 +48,8 @@ var (
 
 // Seal implements consensus.Engine, attempting to find a nonce that satisfies
 // the block's difficulty requirements.
+var big10 = big.NewInt(10)
+
 func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
 	// If we're running a fake PoW, simply return a 0 nonce immediately
 	if ethash.config.PowMode == ModeFake || ethash.config.PowMode == ModeFullFake {
@@ -64,7 +66,7 @@ func (ethash *Ethash) Seal(chain consensus.ChainHeaderReader, block *types.Block
 	// If no transaction, pause
 	// Free mining for the first 10 blocks to give initial funds to coinbase
 	//https://ethereum.stackexchange.com/questions/3151/how-to-make-miner-to-mine-only-when-there-are-pending-transactions
-	if len(block.Transactions()) == 0 && block.Header().Number.Cmp(big.NewInt(10)) > 0 {
+	if len(block.Transactions()) == 0 && block.Header().Number.Cmp(big10) > 0 {
 		ethash.config.Log.Info("Sealing paused, waiting for transactions")
 		return nil
 	}
